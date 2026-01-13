@@ -18,97 +18,96 @@ Program dibagi menjadi beberapa modul untuk memenuhi syarat arsitektur modular:
 📽️ Video Presentasi:
 
 ## pemerograman Python
-# data.py
-
+# =========================
+# MODEL
+# =========================
 class Mahasiswa:
-    def __init__(self, nama, nim, kelas):
-        self.nama = nama
+    def __init__(self, nim, nama, nilai):
         self.nim = nim
-        self.kelas = kelas
+        self.nama = nama
+        self.nilai = nilai
 
-class DaftarMahasiswa:
+
+# =========================
+# CONTROLLER / PROCESS
+# =========================
+class MahasiswaProcess:
     def __init__(self):
-        self.daftar = []
+        self.data_mahasiswa = []
 
-    def tambah(self, mahasiswa):
-        self.daftar.append(mahasiswa)
-# process.py
+    def tambah(self, nim, nama, nilai):
+        if nilai < 0 or nilai > 100:
+            raise ValueError("Nilai harus antara 0 - 100")
+        self.data_mahasiswa.append(Mahasiswa(nim, nama, nilai))
 
-from data import Mahasiswa, DaftarMahasiswa
+    def hapus(self, nim):
+        self.data_mahasiswa = [
+            m for m in self.data_mahasiswa if m.nim != nim
+        ]
 
-class ProsesMahasiswa:
-    def __init__(self):
-        self.repo = DaftarMahasiswa()
+    def get_all(self):
+        return self.data_mahasiswa
 
-    def validasi_dan_simpan(self, nama, nim, kelas):
-        try:
-            if not nama or not nim or not kelas:
-                raise ValueError("Semua data (Nama, NIM, Kelas) wajib diisi!")
-   
-            if len(nim) < 5:
-                raise ValueError("NIM terlalu pendek, periksa kembali.")
 
-            baru = Mahasiswa(nama, nim, kelas)
-            self.repo.tambah(baru)
-            return True, "Data berhasil disimpan."
-        
-        except ValueError as e:
-            return False, str(e)
-# view.py
-
-class TampilanMahasiswa:
-    def form_input(self):
-        print("\n--- Form Input Mahasiswa ---")
-        nama = input("Nama Lengkap : ")
-        nim = input("NIM          : ")
-        kelas = input("Kelas (Contoh TI.25.C4): ")
-        return nama, nim, kelas
-
-    def tampilkan_tabel(self, data_mahasiswa):
-        print("\n" + "="*55)
-        print(f"{'No':<4} | {'NIM':<12} | {'Nama':<20} | {'Kelas':<10}")
-        print("-" * 55)
-        
+# =========================
+# VIEW
+# =========================
+class MahasiswaView:
+    def tampilkan(self, data_mahasiswa):
         if not data_mahasiswa:
-            print(f"{'TIDAK ADA DATA':^55}")
-        else:
-            for i, mhs in enumerate(data_mahasiswa, 1):
-                print(f"{i:<4} | {mhs.nim:<12} | {mhs.nama:<20} | {mhs.kelas:<10}")
-        
-        print("="*55 + "\n")
-# main.py
+            print("Data mahasiswa kosong")
+            return
 
-from process import ProsesMahasiswa
-from view import TampilanMahasiswa
+        print("\nDAFTAR NILAI MAHASISWA")
+        print("-" * 35)
+        for m in data_mahasiswa:
+            print(f"NIM   : {m.nim}")
+            print(f"Nama  : {m.nama}")
+            print(f"Nilai : {m.nilai}")
+            print("-" * 35)
 
-def main():
-    proses = ProsesMahasiswa()
-    tampilan = TampilanMahasiswa()
 
-    while True:
-        print("PILIHAN MENU")
-        print("1. Tambah Data")
-        print("2. Lihat Data")
-        print("3. Keluar")
-        
-        pilihan = input("Pilih menu (1/2/3): ")
+# =========================
+# PROGRAM UTAMA
+# =========================
+process = MahasiswaProcess()
+view = MahasiswaView()
 
-        if pilihan == '1':
-            nama, nim, kelas = tampilan.form_input()
-            sukses, pesan = proses.validasi_dan_simpan(nama, nim, kelas)
-            print(f"Status: {pesan}")
-            
-        elif pilihan == '2':
-            tampilan.tampilkan_tabel(proses.repo.daftar)
-            
-        elif pilihan == '3':
-            print("Program selesai. Terima kasih!")
+while True:
+    print("\nMENU")
+    print("1. Tambah Data")
+    print("2. Hapus Data")
+    print("3. Tampilkan Data")
+    print("4. Keluar")
+
+    try:
+        pilihan = int(input("Pilih menu: "))
+
+        if pilihan == 1:
+            nim = input("NIM   : ")
+            nama = input("Nama  : ")
+            nilai = int(input("Nilai : "))
+            process.tambah(nim, nama, nilai)
+            print("Data berhasil ditambahkan")
+
+        elif pilihan == 2:
+            nim = input("Masukkan NIM yang dihapus: ")
+            process.hapus(nim)
+            print("Data berhasil dihapus")
+
+        elif pilihan == 3:
+            view.tampilkan(process.get_all())
+
+        elif pilihan == 4:
+            print("Program selesai")
             break
-        else:
-            print("Pilihan tidak valid!")
 
-if __name__ == "__main__":
-    main()
+        else:
+            print("Menu tidak valid")
+
+    except ValueError as e:
+        print("Error:", e)
+
 
 ## penjelasan pemerograman
 1.Class Data (data.py)
