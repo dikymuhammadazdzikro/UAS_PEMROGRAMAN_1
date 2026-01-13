@@ -7,7 +7,9 @@ Program ini dibuat menggunakan konsep OOP dan modular untuk mengelola data nilai
 Program dibagi menjadi beberapa modul untuk memenuhi syarat arsitektur modular:
 
 1.data.py: Berisi Class Data untuk menyimpan struktur list/database.
+
 2.process.py: Berisi Class Process untuk logika validasi dan pengolahan data.
+
 3.view.py: Berisi Class View untuk menangani input user dan tampilan tabel.
 4.main.py: File utama untuk menjalankan program
 
