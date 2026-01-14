@@ -15,12 +15,11 @@ Program dibagi menjadi beberapa modul untuk memenuhi syarat arsitektur modular:
 4. main.py: File utama untuk menjalankan program
 
 ## Demo & Dokumentasi
-📽️ Video Presentasi:
+📽️ Video Presentasi: 
+https://youtu.be/N1xeON2mKRM?si=7hB7Zpiof3u9mXGH
 
 ## pemerograman Python
-# =========================
-# MODEL
-# =========================
+# Data
 class Mahasiswa:
     def __init__(self, nim, nama, nilai):
         self.nim = nim
@@ -28,9 +27,8 @@ class Mahasiswa:
         self.nilai = nilai
 
 
-# =========================
-# CONTROLLER / PROCESS
-# =========================
+
+# PROCESS
 class MahasiswaProcess:
     def __init__(self):
         self.data_mahasiswa = []
@@ -49,9 +47,7 @@ class MahasiswaProcess:
         return self.data_mahasiswa
 
 
-# =========================
 # VIEW
-# =========================
 class MahasiswaView:
     def tampilkan(self, data_mahasiswa):
         if not data_mahasiswa:
@@ -67,9 +63,7 @@ class MahasiswaView:
             print("-" * 35)
 
 
-# =========================
-# PROGRAM UTAMA
-# =========================
+# MAIN
 process = MahasiswaProcess()
 view = MahasiswaView()
 
